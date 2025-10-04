@@ -197,6 +197,156 @@ async function sendMessageWithRetry(
 }
 ```
 
+### Example 4: Setting up Webhook Instead of Long Polling
+```typescript
+import { TelegramClient } from '@bot-machine/telegram-client';
+
+const client = new TelegramClient('YOUR_BOT_TOKEN');
+
+async function setupWebhook() {
+  try {
+    // Set your webhook URL - this should be an HTTPS URL where Telegram can send updates
+    const webhookUrl = 'https://your-domain.com/webhook';  // Replace with your actual URL
+    
+    await client.setWebhook({
+      url: webhookUrl,
+      // Optional: specify which update types you want to receive
+      allowed_updates: ['message', 'callback_query', 'inline_query'],
+      // Optional: maximum allowed simultaneous HTTPS connections
+      max_connections: 40,  // Default is 40, values between 1-100 are accepted
+      // Optional: pass a certificate file if using self-signed certificate
+      // certificate: 'path/to/certificate.pem',
+      // Optional: specify secret token for webhook security
+      secret_token: 'your-secret-token'  // Up to 256 characters, avoids unauthorized requests
+    });
+    
+    console.log('Webhook set successfully!');
+    
+    // Get information about the current webhook
+    const webhookInfo = await client.getWebhookInfo();
+    console.log('Webhook info:', webhookInfo);
+    
+  } catch (error) {
+    console.error('Error setting webhook:', error);
+  }
+}
+
+async function removeWebhook() {
+  try {
+    // Remove the webhook to switch back to getUpdates
+    await client.deleteWebhook({
+      // Optional: drop pending updates
+      drop_pending_updates: true
+    });
+    
+    console.log('Webhook removed successfully!');
+  } catch (error) {
+    console.error('Error removing webhook:', error);
+  }
+}
+
+// Call setupWebhook to configure the webhook
+setupWebhook();
+```
+
+### Example 5: Webhook Handler Implementation
+```typescript
+// This is an example of how to implement a webhook handler with Express.js
+// You'll need to install: npm install express body-parser
+
+import express from 'express';
+import { TelegramClient, Update } from '@bot-machine/telegram-client';
+import bodyParser from 'body-parser';
+
+const app = express();
+const client = new TelegramClient('YOUR_BOT_TOKEN');
+
+// Parse JSON bodies
+app.use(bodyParser.json());
+
+// Webhook endpoint - this should match the URL you used in setWebhook
+app.post('/webhook', async (req, res) => {
+  try {
+    // Get the update from Telegram
+    const update: Update = req.body;
+    
+    console.log('Received update:', update.update_id);
+    
+    // Process different types of updates
+    if (update.message) {
+      // Handle incoming message
+      await handleMessage(update.message);
+    } else if (update.callback_query) {
+      // Handle callback query from inline keyboards
+      await handleCallbackQuery(update.callback_query);
+    } else if (update.inline_query) {
+      // Handle inline query
+      await handleInlineQuery(update.inline_query);
+    }
+    
+    // Respond quickly to acknowledge receipt of the update
+    res.status(200).json({ status: 'OK' });
+  } catch (error) {
+    console.error('Error processing webhook:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+async function handleMessage(message: Message) {
+  console.log(`Received message from ${message.from?.first_name}: ${message.text}`);
+  
+  // Echo the message back to the user
+  if (message.text && message.chat) {
+    await client.sendMessage({
+      chat_id: message.chat.id,
+      text: `You said: ${message.text}`,
+      reply_to_message_id: message.message_id
+    });
+  }
+}
+
+async function handleCallbackQuery(callbackQuery: CallbackQuery) {
+  console.log(`Received callback query: ${callbackQuery.data}`);
+  
+  // Answer the callback query
+  await client.answerCallbackQuery({
+    callback_query_id: callbackQuery.id,
+    text: 'Callback received!',
+    show_alert: false
+  });
+  
+  // Optionally send a message in response
+  if (callbackQuery.message?.chat) {
+    await client.sendMessage({
+      chat_id: callbackQuery.message.chat.id,
+      text: `Callback data: ${callbackQuery.data}`
+    });
+  }
+}
+
+async function handleInlineQuery(inlineQuery: InlineQuery) {
+  // This is a simplified example - in practice, you'd return actual query results
+  console.log(`Received inline query from ${inlineQuery.from.first_name}: ${inlineQuery.query}`);
+  
+  // Telegram doesn't allow responding to inline queries from webhooks
+  // You would typically handle these with getUpdates if needed
+}
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Webhook server listening on port ${PORT}`);
+});
+```
+
+Webhook vs. Long Polling:
+
+- **Webhooks** are more efficient for high-volume bots, as Telegram pushes updates to your server
+- **Long Polling** (using getUpdates) is simpler to set up and good for low-volume or testing scenarios
+- Webhooks require a public HTTPS endpoint, while long polling works from any location
+- For production bots with many users, webhooks are generally preferred
+```
+
 ## API Reference
 
 ### TelegramClient

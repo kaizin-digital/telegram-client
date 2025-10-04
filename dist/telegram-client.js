@@ -240,6 +240,27 @@ export class TelegramClient {
         const response = await this.request("deleteMessage", params);
         return response.result;
     }
+    /**
+     * Specify an HTTPS URL to receive incoming updates via webhook
+     */
+    async setWebhook(params) {
+        const response = await this.request("setWebhook", params);
+        return response.result;
+    }
+    /**
+     * Remove webhook integration
+     */
+    async deleteWebhook(params) {
+        const response = await this.request("deleteWebhook", params);
+        return response.result;
+    }
+    /**
+     * Get information about the current webhook
+     */
+    async getWebhookInfo() {
+        const response = await this.request("getWebhookInfo");
+        return response.result;
+    }
 }
 export class TelegramError extends Error {
     constructor(message, code, parameters, method) {

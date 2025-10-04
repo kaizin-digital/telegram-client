@@ -57,6 +57,9 @@ import type {
 	EditMessageTextResponse,
 	EditMessageReplyMarkupParams,
 	EditMessageReplyMarkupResponse,
+	SetWebhookParams,
+	DeleteWebhookParams,
+	GetWebhookInfoResponse,
 } from "./telegram-types";
 
 export class TelegramClient {
@@ -440,6 +443,30 @@ export class TelegramClient {
 		message_id: number;
 	}): Promise<boolean> {
 		const response = await this.request<boolean>("deleteMessage", params);
+		return response.result!;
+	}
+
+	/**
+	 * Specify an HTTPS URL to receive incoming updates via webhook
+	 */
+	async setWebhook(params: SetWebhookParams): Promise<boolean> {
+		const response = await this.request<boolean>("setWebhook", params);
+		return response.result!;
+	}
+
+	/**
+	 * Remove webhook integration
+	 */
+	async deleteWebhook(params?: DeleteWebhookParams): Promise<boolean> {
+		const response = await this.request<boolean>("deleteWebhook", params);
+		return response.result!;
+	}
+
+	/**
+	 * Get information about the current webhook
+	 */
+	async getWebhookInfo(): Promise<GetWebhookInfoResponse> {
+		const response = await this.request<GetWebhookInfoResponse>("getWebhookInfo");
 		return response.result!;
 	}
 }

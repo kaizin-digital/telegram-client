@@ -15,7 +15,12 @@ export type {
   GetMeResponse,
   SendMessageResponse,
   GetUpdatesParams,
-  GetUpdatesResponse
+  GetUpdatesResponse,
+  SetWebhookParams,
+  SetWebhookResponse,
+  DeleteWebhookParams,
+  DeleteWebhookResponse,
+  GetWebhookInfoResponse
 } from './telegram-types';
 
 export { TelegramError } from './telegram-client';
