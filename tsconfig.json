@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "lib": ["ES2020", "DOM"],
+    "outDir": "./dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "exactOptionalPropertyTypes": true,
+    "types": ["bun-types"],
+    "resolveJsonModule": true,
+    "emitDeclarationOnly": false
+  },
+  "include": [
+    "index.ts",
+    "interfaces.ts",
+    "telegram-client.ts",
+    "telegram-types.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "example.ts",
+    "test.ts",
+    "telegram-client.test.ts",
+    "fix-types.js"
+  ]
+}
