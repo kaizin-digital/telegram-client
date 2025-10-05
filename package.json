@@ -45,7 +45,8 @@
     "dist/**/*",
     "README.md",
     "LICENSE",
-    "package.json"
+    "package.json",
+    "docs/**/*"
   ],
   "repository": {
     "type": "git",
