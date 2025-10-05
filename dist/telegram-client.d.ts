@@ -1,4 +1,4 @@
-import type { GetMeResponse, SendMessageParams, SendMessageResponse, GetUpdatesParams, GetUpdatesResponse, ForwardMessageParams, ForwardMessageResponse, CopyMessageParams, CopyMessageResponse, SendPhotoParams, SendPhotoResponse, SendAudioParams, SendAudioResponse, SendDocumentParams, SendDocumentResponse, SendVideoParams, SendVideoResponse, SendAnimationParams, SendAnimationResponse, SendVoiceParams, SendVoiceResponse, SendVideoNoteParams, SendVideoNoteResponse, SendMediaGroupParams, SendMediaGroupResponse, SendLocationParams, SendLocationResponse, EditMessageLiveLocationParams, EditMessageLiveLocationResponse, StopMessageLiveLocationParams, StopMessageLiveLocationResponse, SendVenueParams, SendVenueResponse, SendContactParams, SendContactResponse, SendPollParams, SendPollResponse, SendDiceParams, SendDiceResponse, SendChatActionParams, SendChatActionResponse, GetUserProfilePhotosParams, GetUserProfilePhotosResponse, GetFileParams, GetFileResponse, BanChatMemberParams, BanChatMemberResponse, UnbanChatMemberParams, UnbanChatMemberResponse, AnswerCallbackQueryParams, AnswerCallbackQueryResponse, EditMessageTextParams, EditMessageTextResponse, EditMessageReplyMarkupParams, EditMessageReplyMarkupResponse, SetWebhookParams, DeleteWebhookParams, GetWebhookInfoResponse } from "./telegram-types";
+import type { GetMeResponse, SendMessageParams, SendMessageResponse, GetUpdatesParams, GetUpdatesResponse, ForwardMessageParams, ForwardMessageResponse, CopyMessageParams, CopyMessageResponse, SendPhotoParams, SendPhotoResponse, SendAudioParams, SendAudioResponse, SendDocumentParams, SendDocumentResponse, SendVideoParams, SendVideoResponse, SendAnimationParams, SendAnimationResponse, SendVoiceParams, SendVoiceResponse, SendVideoNoteParams, SendVideoNoteResponse, SendMediaGroupParams, SendMediaGroupResponse, SendLocationParams, SendLocationResponse, EditMessageLiveLocationParams, EditMessageLiveLocationResponse, StopMessageLiveLocationParams, StopMessageLiveLocationResponse, SendVenueParams, SendVenueResponse, SendContactParams, SendContactResponse, SendPollParams, SendPollResponse, SendDiceParams, SendDiceResponse, SendChatActionParams, SendChatActionResponse, GetUserProfilePhotosParams, GetUserProfilePhotosResponse, GetFileParams, GetFileResponse, BanChatMemberParams, BanChatMemberResponse, UnbanChatMemberParams, UnbanChatMemberResponse, AnswerCallbackQueryParams, AnswerCallbackQueryResponse, EditMessageTextParams, EditMessageTextResponse, EditMessageReplyMarkupParams, EditMessageReplyMarkupResponse, SetWebhookParams, DeleteWebhookParams, GetWebhookInfoResponse, SendInvoiceParams, SendInvoiceResponse, CreateInvoiceLinkParams, AnswerShippingQueryParams, AnswerPreCheckoutQueryParams } from "./telegram-types";
 export declare class TelegramClient {
     private readonly baseUrl;
     private readonly token;
@@ -139,6 +139,22 @@ export declare class TelegramClient {
      * Get information about the current webhook
      */
     getWebhookInfo(): Promise<GetWebhookInfoResponse>;
+    /**
+     * Send invoices
+     */
+    sendInvoice(params: SendInvoiceParams): Promise<SendInvoiceResponse>;
+    /**
+     * Create invoice link
+     */
+    createInvoiceLink(params: CreateInvoiceLinkParams): Promise<string>;
+    /**
+     * Reply to shipping queries
+     */
+    answerShippingQuery(params: AnswerShippingQueryParams): Promise<boolean>;
+    /**
+     * Reply to pre-checkout queries
+     */
+    answerPreCheckoutQuery(params: AnswerPreCheckoutQueryParams): Promise<boolean>;
 }
 export declare class TelegramError extends Error {
     readonly code?: number | undefined;

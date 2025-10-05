@@ -1463,3 +1463,94 @@ interface DeleteWebhookParams {
   drop_pending_updates?: boolean;        // Optional. Pass True to drop all pending updates
 }
 ```
+
+## SendInvoiceParams
+
+Parameters for the sendInvoice method.
+
+```typescript
+interface SendInvoiceParams {
+  chat_id: number | string;              // Unique identifier for the target chat or username of the target channel
+  message_thread_id?: number;            // Optional. Unique identifier for the target message thread (topic) of the forum
+  title: string;                         // Product name, 1-32 characters
+  description: string;                   // Product description, 1-255 characters
+  payload: string;                       // Bot-defined invoice payload, 1-128 bytes
+  provider_token: string;                // Payment provider token
+  currency: string;                      // Three-letter ISO 4217 currency code
+  prices: LabeledPrice[];                // Price breakdown, a JSON-serialized list of components
+  max_tip_amount?: number;               // Optional. The maximum accepted amount for tips in the smallest units of the currency
+  suggested_tip_amounts?: number[];      // Optional. A JSON-serialized array of suggested amounts of tips in the smallest units of the currency
+  start_parameter?: string;              // Optional. Unique deep-linking parameter
+  provider_data?: string;                // Optional. JSON-encoded data about the invoice
+  photo_url?: string;                    // Optional. URL of the product photo for the invoice
+  photo_size?: number;                   // Optional. Photo size in bytes
+  photo_width?: number;                  // Optional. Photo width
+  photo_height?: number;                 // Optional. Photo height
+  need_name?: boolean;                   // Optional. Pass True if you require the user's full name to complete the order
+  need_phone_number?: boolean;           // Optional. Pass True if you require the user's phone number to complete the order
+  need_email?: boolean;                  // Optional. Pass True if you require the user's email address to complete the order
+  need_shipping_address?: boolean;       // Optional. Pass True if you require the user's shipping address to complete the order
+  send_phone_number_to_provider?: boolean; // Optional. Pass True if the user's phone number should be sent to the provider
+  send_email_to_provider?: boolean;      // Optional. Pass True if the user's email address should be sent to the provider
+  is_flexible?: boolean;                 // Optional. Pass True if the final price depends on the shipping method
+  disable_notification?: boolean;        // Optional. Sends the message silently
+  protect_content?: boolean;             // Optional. Protects the contents of the sent message from forwarding and saving
+  reply_to_message_id?: number;          // Optional. If the message is a reply, ID of the original message
+  allow_sending_without_reply?: boolean; // Optional. Pass True if the message should be sent even if the specified replied-to message is not found
+  reply_markup?: InlineKeyboardMarkup;   // Optional. A JSON-serialized object for an inline keyboard
+}
+```
+
+## CreateInvoiceLinkParams
+
+Parameters for the createInvoiceLink method.
+
+```typescript
+interface CreateInvoiceLinkParams {
+  title: string;                         // Product name, 1-32 characters
+  description: string;                   // Product description, 1-255 characters
+  payload: string;                       // Bot-defined invoice payload, 1-128 bytes
+  provider_token: string;                // Payment provider token
+  currency: string;                      // Three-letter ISO 4217 currency code
+  prices: LabeledPrice[];                // Price breakdown, a JSON-serialized list of components
+  max_tip_amount?: number;               // Optional. The maximum accepted amount for tips in the smallest units of the currency
+  suggested_tip_amounts?: number[];      // Optional. A JSON-serialized array of suggested amounts of tips in the smallest units of the currency
+  provider_data?: string;                // Optional. JSON-encoded data about the invoice
+  photo_url?: string;                    // Optional. URL of the product photo for the invoice
+  photo_size?: number;                   // Optional. Photo size in bytes
+  photo_width?: number;                  // Optional. Photo width
+  photo_height?: number;                 // Optional. Photo height
+  need_name?: boolean;                   // Optional. Pass True if you require the user's full name to complete the order
+  need_phone_number?: boolean;           // Optional. Pass True if you require the user's phone number to complete the order
+  need_email?: boolean;                  // Optional. Pass True if you require the user's email address to complete the order
+  need_shipping_address?: boolean;       // Optional. Pass True if you require the user's shipping address to complete the order
+  send_phone_number_to_provider?: boolean; // Optional. Pass True if the user's phone number should be sent to the provider
+  send_email_to_provider?: boolean;      // Optional. Pass True if the user's email address should be sent to the provider
+  is_flexible?: boolean;                 // Optional. Pass True if the final price depends on the shipping method
+}
+```
+
+## AnswerShippingQueryParams
+
+Parameters for the answerShippingQuery method.
+
+```typescript
+interface AnswerShippingQueryParams {
+  shipping_query_id: string;             // Unique identifier for the query to be answered
+  ok: boolean;                           // Specify True if delivery to the specified address is possible and False if there are any problems
+  shipping_options?: ShippingOption[];   // Optional. Required if ok is True. A JSON-serialized array of available shipping options
+  error_message?: string;                // Optional. Required if ok is False. Error message in human readable form that explains why it is impossible to complete the order
+}
+```
+
+## AnswerPreCheckoutQueryParams
+
+Parameters for the answerPreCheckoutQuery method.
+
+```typescript
+interface AnswerPreCheckoutQueryParams {
+  pre_checkout_query_id: string;         // Unique identifier for the query to be answered
+  ok: boolean;                           // Specify True if everything is alright and the bot is ready to proceed with the order
+  error_message?: string;                // Optional. Required if ok is False. Error message in human readable form that explains the reason for failure to proceed with the checkout
+}
+```

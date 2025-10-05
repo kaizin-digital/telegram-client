@@ -385,6 +385,66 @@ async function sendMultipleMessageTypes(client: TelegramClient, chatId: number) 
 }
 ```
 
+## Sending Invoices
+
+To send invoices to users for payments, use the `sendInvoice` method:
+
+```typescript
+// Send an invoice
+const invoiceMessage = await client.sendInvoice({
+  chat_id: 123456789,
+  title: 'Premium Subscription',
+  description: '1-year premium subscription to our service',
+  payload: 'premium-subscription-payload',
+  provider_token: 'YOUR_PROVIDER_TOKEN',  // Get this from BotFather
+  currency: 'USD',  // Three-letter currency code
+  prices: [
+    {
+      label: 'Subscription',
+      amount: 999  // Amount in cents (9.99 USD)
+    },
+    {
+      label: 'Tax',
+      amount: 100  // 1.00 USD
+    }
+  ],
+  start_parameter: 'subscribe',
+  photo_url: 'https://example.com/subscription-image.jpg',
+  need_name: true,
+  need_email: true,
+  need_shipping_address: false,  // Set to true if shipping is required
+  is_flexible: false  // Set to true if shipping options should be requested
+});
+
+console.log(`Invoice sent with message ID: ${invoiceMessage.message_id}`);
+```
+
+## Creating Invoice Links
+
+For sharing invoices easily, you can create invoice links:
+
+```typescript
+// Create a payment link
+const invoiceLink = await client.createInvoiceLink({
+  title: 'Product Purchase',
+  description: 'High-quality product with premium features',
+  payload: 'product-purchase-payload',
+  provider_token: 'YOUR_PROVIDER_TOKEN',
+  currency: 'USD',
+  prices: [
+    {
+      label: 'Product',
+      amount: 2999  // Amount in cents (29.99 USD)
+    }
+  ],
+  need_name: true,
+  need_email: true,
+  need_phone_number: true
+});
+
+console.log(`Invoice link created: ${invoiceLink}`);
+```
+
 ## Error Handling
 
 Always implement error handling when sending messages:

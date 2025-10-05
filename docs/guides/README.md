@@ -41,6 +41,7 @@ Step-by-step tutorials and conceptual guides:
 - [Webhooks vs Long Polling](guides/webhooks-vs-long-polling.md) - Comparison and implementation
 - [Handling Media](guides/handling-media.md) - Working with photos, videos, and other media
 - [Inline Keyboards](guides/inline-keyboards.md) - Creating interactive keyboards
+- [Payment Processing](guides/payment-processing.md) - Working with payments and invoices
 - [Error Handling](guides/error-handling.md) - Best practices for handling errors
 - [Working with AI Agents](guides/ai-agents.md) - Using the library with AI agents
 

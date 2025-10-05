@@ -21,8 +21,9 @@ Step-by-step tutorials and conceptual guides:
 4. [Webhooks vs Long Polling](guides/webhooks-vs-long-polling.md) - Comparison and implementation
 5. [Handling Media](guides/handling-media.md) - Working with photos, videos, and other media
 6. [Inline Keyboards](guides/inline-keyboards.md) - Creating interactive keyboards
-7. [Error Handling](guides/error-handling.md) - Best practices for handling errors
-8. [Working with AI Agents](guides/ai-agents.md) - Using the library with AI agents
+7. [Payment Processing](guides/payment-processing.md) - Working with payments and invoices
+8. [Error Handling](guides/error-handling.md) - Best practices for handling errors
+9. [Working with AI Agents](guides/ai-agents.md) - Using the library with AI agents
 
 ## Overview
 
@@ -35,6 +36,7 @@ The documentation covers the following main areas:
 - **Location Services**: `sendLocation()`, `sendVenue()`
 - **Interactive Elements**: `sendPoll()`, `sendDice()`, `answerCallbackQuery()`
 - **Chat Management**: `banChatMember()`, `unbanChatMember()`, `getChat()`, `leaveChat()`
+- **Payment Operations**: `sendInvoice()`, `createInvoiceLink()`, `answerShippingQuery()`, `answerPreCheckoutQuery()`
 - **Webhook Management**: `setWebhook()`, `deleteWebhook()`, `getWebhookInfo()`
 
 ### Core Concepts

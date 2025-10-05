@@ -261,6 +261,34 @@ export class TelegramClient {
         const response = await this.request("getWebhookInfo");
         return response.result;
     }
+    /**
+     * Send invoices
+     */
+    async sendInvoice(params) {
+        const response = await this.request("sendInvoice", params);
+        return response.result;
+    }
+    /**
+     * Create invoice link
+     */
+    async createInvoiceLink(params) {
+        const response = await this.request("createInvoiceLink", params);
+        return response.result;
+    }
+    /**
+     * Reply to shipping queries
+     */
+    async answerShippingQuery(params) {
+        const response = await this.request("answerShippingQuery", params);
+        return response.result;
+    }
+    /**
+     * Reply to pre-checkout queries
+     */
+    async answerPreCheckoutQuery(params) {
+        const response = await this.request("answerPreCheckoutQuery", params);
+        return response.result;
+    }
 }
 export class TelegramError extends Error {
     constructor(message, code, parameters, method) {

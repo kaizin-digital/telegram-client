@@ -422,6 +422,80 @@ const result = await client.deleteMessage({
 
 **Response Type:** `boolean`
 
+## sendInvoice(params: SendInvoiceParams)
+
+Send invoices.
+
+```typescript
+const message = await client.sendInvoice({
+  chat_id: 123456789,
+  title: 'Product Name',
+  description: 'Product Description',
+  payload: 'custom-payload',
+  provider_token: 'PROVIDER_TOKEN',
+  currency: 'USD',
+  prices: [
+    { label: 'Product', amount: 10000 }  // 100.00 in the smallest currency unit
+  ]
+});
+```
+
+**Response Type:** `Message`
+
+## createInvoiceLink(params: CreateInvoiceLinkParams)
+
+Create invoice link.
+
+```typescript
+const invoiceLink = await client.createInvoiceLink({
+  title: 'Product Name',
+  description: 'Product Description',
+  payload: 'custom-payload',
+  provider_token: 'PROVIDER_TOKEN',
+  currency: 'USD',
+  prices: [
+    { label: 'Product', amount: 10000 }  // 100.00 in the smallest currency unit
+  ]
+});
+```
+
+**Response Type:** `string`
+
+## answerShippingQuery(params: AnswerShippingQueryParams)
+
+Reply to shipping queries.
+
+```typescript
+const result = await client.answerShippingQuery({
+  shipping_query_id: 'SHIPPING_QUERY_ID',
+  ok: true,
+  shipping_options: [
+    {
+      id: 'shipping-option-id',
+      title: 'Shipping Option',
+      prices: [
+        { label: 'Shipping', amount: 500 }  // 5.00 in the smallest currency unit
+      ]
+    }
+  ]
+});
+```
+
+**Response Type:** `boolean`
+
+## answerPreCheckoutQuery(params: AnswerPreCheckoutQueryParams)
+
+Reply to pre-checkout queries.
+
+```typescript
+const result = await client.answerPreCheckoutQuery({
+  pre_checkout_query_id: 'PRE_CHECKOUT_QUERY_ID',
+  ok: true
+});
+```
+
+**Response Type:** `boolean`
+
 ## setWebhook(params: SetWebhookParams)
 
 Specify an HTTPS URL to receive incoming updates via webhook.

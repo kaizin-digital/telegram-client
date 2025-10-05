@@ -60,6 +60,11 @@ import type {
 	SetWebhookParams,
 	DeleteWebhookParams,
 	GetWebhookInfoResponse,
+	SendInvoiceParams,
+	SendInvoiceResponse,
+	CreateInvoiceLinkParams,
+	AnswerShippingQueryParams,
+	AnswerPreCheckoutQueryParams,
 } from "./telegram-types";
 
 export class TelegramClient {
@@ -467,6 +472,38 @@ export class TelegramClient {
 	 */
 	async getWebhookInfo(): Promise<GetWebhookInfoResponse> {
 		const response = await this.request<GetWebhookInfoResponse>("getWebhookInfo");
+		return response.result!;
+	}
+
+	/**
+	 * Send invoices
+	 */
+	async sendInvoice(params: SendInvoiceParams): Promise<SendInvoiceResponse> {
+		const response = await this.request<SendInvoiceResponse>("sendInvoice", params);
+		return response.result!;
+	}
+
+	/**
+	 * Create invoice link
+	 */
+	async createInvoiceLink(params: CreateInvoiceLinkParams): Promise<string> {
+		const response = await this.request<string>("createInvoiceLink", params);
+		return response.result!;
+	}
+
+	/**
+	 * Reply to shipping queries
+	 */
+	async answerShippingQuery(params: AnswerShippingQueryParams): Promise<boolean> {
+		const response = await this.request<boolean>("answerShippingQuery", params);
+		return response.result!;
+	}
+
+	/**
+	 * Reply to pre-checkout queries
+	 */
+	async answerPreCheckoutQuery(params: AnswerPreCheckoutQueryParams): Promise<boolean> {
+		const response = await this.request<boolean>("answerPreCheckoutQuery", params);
 		return response.result!;
 	}
 }

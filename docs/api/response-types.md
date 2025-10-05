@@ -640,6 +640,87 @@ interface PassportData {
 }
 ```
 
+## Invoice
+
+This object contains basic information about an invoice.
+
+```typescript
+interface Invoice {
+  title: string;                        // Product name
+  description: string;                  // Product description
+  start_parameter: string;              // Unique bot deep-linking parameter that can be used to generate this invoice
+  currency: string;                     // Three-letter ISO 4217 currency code
+  total_amount: number;                 // Total price in the smallest units of the currency
+}
+```
+
+## SuccessfulPayment
+
+This object contains basic information about a successful payment.
+
+```typescript
+interface SuccessfulPayment {
+  currency: string;                     // Three-letter ISO 4217 currency code
+  total_amount: number;                 // Total price in the smallest units of the currency
+  invoice_payload: string;              // Bot specified invoice payload
+  shipping_option_id?: string;          // Optional. Identifier of the shipping option chosen by the user
+  order_info?: OrderInfo;               // Optional. Order information provided by the user
+  telegram_payment_charge_id: string;   // Telegram payment identifier
+  provider_payment_charge_id: string;   // Provider payment identifier
+}
+```
+
+## OrderInfo
+
+This object represents information about an order.
+
+```typescript
+interface OrderInfo {
+  name?: string;                        // Optional. User name
+  phone_number?: string;                // Optional. User's phone number
+  email?: string;                       // Optional. User email
+  shipping_address?: ShippingAddress;   // Optional. User shipping address
+}
+```
+
+## ShippingAddress
+
+This object represents a shipping address.
+
+```typescript
+interface ShippingAddress {
+  country_code: string;                 // ISO 3166-1 alpha-2 country code
+  state: string;                        // State, if applicable
+  city: string;                         // City
+  street_line1: string;                 // First line for the address
+  street_line2: string;                 // Second line for the address
+  post_code: string;                    // Address post code
+}
+```
+
+## LabeledPrice
+
+This object represents a portion of the price for goods or services.
+
+```typescript
+interface LabeledPrice {
+  label: string;                        // Portion label
+  amount: number;                       // Price of the product in the smallest units of the currency
+}
+```
+
+## ShippingOption
+
+This object represents one shipping option.
+
+```typescript
+interface ShippingOption {
+  id: string;                           // Shipping option identifier
+  title: string;                        // Option title
+  prices: LabeledPrice[];               // List of price portions
+}
+```
+
 ## TelegramError
 
 This error is thrown when the Telegram API returns an error.

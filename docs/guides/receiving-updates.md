@@ -525,6 +525,99 @@ async function safeProcessUpdate(client: TelegramClient, update: Update) {
 }
 ```
 
+## Handling Payment Updates
+
+When using payment functionality, you'll need to handle additional update types related to payments:
+
+```typescript
+import { TelegramClient, Update, ShippingQuery, PreCheckoutQuery } from '@bot-machine/telegram-client';
+
+async function processUpdateWithPayments(update: Update, client: TelegramClient) {
+  // Handle regular messages, callbacks, etc.
+  if (update.message) {
+    await handleMessage(update.message);
+  } else if (update.callback_query) {
+    await handleCallbackQuery(update.callback_query);
+  }
+  // Handle shipping queries (when user enters shipping info)
+  else if (update.shipping_query) {
+    await handleShippingQuery(update.shipping_query, client);
+  }
+  // Handle pre-checkout queries (right before payment)
+  else if (update.pre_checkout_query) {
+    await handlePreCheckoutQuery(update.pre_checkout_query, client);
+  }
+  // Handle successful payments
+  else if (update.message?.successful_payment) {
+    await handleSuccessfulPayment(update.message, client);
+  }
+}
+
+// Handle shipping queries - called when a user enters shipping information
+async function handleShippingQuery(shippingQuery: ShippingQuery, client: TelegramClient) {
+  console.log(`Received shipping query from user ${shippingQuery.from.id}`);
+  
+  // Validate the shipping address if needed
+  // In this example, we'll accept shipping worldwide
+  await client.answerShippingQuery({
+    shipping_query_id: shippingQuery.id,
+    ok: true,
+    shipping_options: [
+      {
+        id: 'shipping-option-standard',
+        title: 'Standard Shipping',
+        prices: [
+          { label: 'Shipping', amount: 500 }  // 5.00 in smallest currency units
+        ]
+      },
+      {
+        id: 'shipping-option-express',
+        title: 'Express Shipping',
+        prices: [
+          { label: 'Express Shipping', amount: 1500 }  // 15.00 in smallest currency units
+        ]
+      }
+    ]
+  });
+}
+
+// Handle pre-checkout queries - called right before the payment process
+async function handlePreCheckoutQuery(preCheckoutQuery: PreCheckoutQuery, client: TelegramClient) {
+  console.log(`Received pre-checkout query from user ${preCheckoutQuery.from.id}`);
+  
+  // Validate the order data
+  // In a real application, you would validate the order details here
+  // For example, check if the item is still available, etc.
+  
+  // If everything is OK, approve the pre-checkout query
+  await client.answerPreCheckoutQuery({
+    pre_checkout_query_id: preCheckoutQuery.id,
+    ok: true
+  });
+}
+
+// Handle successful payments
+async function handleSuccessfulPayment(message: any, client: TelegramClient) {
+  console.log(`Received successful payment from ${message.from?.first_name}`);
+  
+  const payment = message.successful_payment;
+  
+  // Send a thank you message to the user
+  await client.sendMessage({
+    chat_id: message.chat.id,
+    text: `Thank you for your purchase! Your order (ID: ${payment.invoice_payload}) has been received.`
+  });
+  
+  // Process the order in your system
+  console.log(`Payment details:`, {
+    currency: payment.currency,
+    total_amount: payment.total_amount,
+    provider_payment_charge_id: payment.provider_payment_charge_id,
+    telegram_payment_charge_id: payment.telegram_payment_charge_id
+  });
+}
+```
+
 ## Next Steps
 
 Now that you know how to receive and handle updates using long polling, learn about:
@@ -533,3 +626,4 @@ Now that you know how to receive and handle updates using long polling, learn ab
 - [Handling media files](../guides/handling-media.md) that users send to your bot
 - [Creating interactive keyboards](../guides/inline-keyboards.md) for user interaction
 - [Error handling best practices](../guides/error-handling.md) for production bots
+- [Working with payments](../guides/payment-processing.md) - new guide for payment processing
