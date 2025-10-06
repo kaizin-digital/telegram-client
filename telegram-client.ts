@@ -1,6 +1,6 @@
 // telegram-client.ts - Main Telegram client implementation
 
-import { ApiResponse } from "./telegram-types";
+import { ApiResponse, Update } from "./telegram-types";
 import type {
 	GetMeResponse,
 	SendMessageParams,
@@ -70,6 +70,8 @@ import type {
 export class TelegramClient {
 	private readonly baseUrl: string;
 	private readonly token: string;
+	private polling: boolean = false;
+	private offset: number = 0;
 
 	constructor(token: string) {
 		if (!token) {
@@ -505,6 +507,40 @@ export class TelegramClient {
 	async answerPreCheckoutQuery(params: AnswerPreCheckoutQueryParams): Promise<boolean> {
 		const response = await this.request<boolean>("answerPreCheckoutQuery", params);
 		return response.result!;
+	}
+
+	/**
+	 * Start polling for updates
+	 */
+	async startPolling(callback: (update: Update) => void): Promise<void> {
+		this.polling = true;
+		console.log("Polling started");
+
+		while (this.polling) {
+			try {
+				const updates = await this.getUpdates({
+					offset: this.offset,
+					timeout: 30,
+				});
+
+				for (const update of updates) {
+					this.offset = update.update_id + 1;
+					callback(update);
+				}
+			} catch (error) {
+				console.error("Error while polling:", error);
+				// Wait for a bit before retrying to avoid spamming requests on network errors
+				await new Promise((resolve) => setTimeout(resolve, 5000));
+			}
+		}
+	}
+
+	/**
+	 * Stop polling for updates
+	 */
+	stopPolling(): void {
+		this.polling = false;
+		console.log("Polling stopped");
 	}
 }
 
